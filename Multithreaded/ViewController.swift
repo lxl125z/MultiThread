@@ -27,6 +27,10 @@ class ViewController: UIViewController {
         //NSOperation使用
         operationTest()
         
+        
+        //GCD使用
+        //GCDTest()
+        
     }
 }
 
@@ -103,20 +107,20 @@ fileprivate extension ViewController{
         
         //使用方式
         //1、使用子类BlockOperation
-        operationTest_blockOperation()
+        //operationTest_blockOperation()
         
         //2、OperationQueue队列
         
         operationTest_OperationQueue()
         
         //设施依赖关系
-        operationTest_DependencyRelationship()
+        //operationTest_DependencyRelationship()
         
         //设置Operation的优先级
-        operationTest_Priority()
+        //operationTest_Priority()
         
         //等待Operation完成‘
-        operationTest_wait()
+        //operationTest_wait()
     }
     
     
@@ -141,7 +145,7 @@ fileprivate extension ViewController{
         //设置最大并发数
         queue.maxConcurrentOperationCount = 1
         queue.addOperation {
-            for _ in 0...500{
+            for _ in 0...5{
                 print("OperationQueue1执行了",Thread.current)
                 
             }
@@ -149,12 +153,15 @@ fileprivate extension ViewController{
         queue.addOperation {
             print("OperationQueue2执行了",Thread.current)
         }
+        queue.addOperation {
+            print("OperationQueue3执行了",Thread.current)
+        }
+
         let blockOpe = BlockOperation()
         blockOpe.addExecutionBlock {
             print("BlockOperation执行了",Thread.current)
         }
         queue.addOperation(blockOpe)
-        
     }
     
     func operationTest_DependencyRelationship(){
@@ -227,4 +234,20 @@ fileprivate extension ViewController{
         
     }
     
+}
+
+fileprivate extension ViewController{
+
+    func GCDTest(){
+        
+        let gcdQueue = DispatchQueue(label: "com.pingan.test")
+        for index in 0...100{
+            gcdQueue.async {
+                print("任务1执行了",Thread.current,index) //异步开一条线程，顺序执行，同步不开线程
+                
+            }
+        }
+    }
+
+
 }
